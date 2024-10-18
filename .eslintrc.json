@@ -1,1 +1,6 @@
-{ "extends": ["@finsweet"] }
+{
+    "extends": ["@finsweet"],
+    "env": {
+      "jquery": true
+    }
+  }
