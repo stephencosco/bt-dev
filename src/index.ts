@@ -1,27 +1,8 @@
-import $ from 'jquery'; // Import jQuery to use it within TypeScript
-
-$(document).ready(function () {
-  // Prevent the parent dropdown from closing when clicking inside the parent dropdown content
-  $('#search-dropdown .w-dropdown-list').on('click', function (event) {
-    event.stopPropagation(); // Prevent clicks inside dropdown content from closing the parent dropdown
-  });
-
-  // Ensure that clicks on the parent dropdown toggle still function as expected
-  $('#search-dropdown .w-dropdown-toggle').on('click', function (event) {
-    event.stopPropagation(); // Stop the click event from bubbling up and affecting nested dropdowns
-  });
-});
-
-$(document).ready(function () {
-  // Prevent closing both dropdowns when clicking inside the child dropdown
-  $('#search-dropdown .w-dropdown-list').on('click', function (event) {
-    event.stopPropagation(); // Prevents the click from closing the parent dropdown
-  });
-});
+import $ from 'jquery';
 
 $(document).ready(function () {
   // Select the first dropdown and open it on page load with fade-in and slide-down effect
-  const firstDropdown = $('.container-medium .faq-dropdown').first();
+  const firstDropdown = $('.faq-wrapper .faq-dropdown').first(); // Adjusted to target .faq-wrapper
   const firstDropdownContent = firstDropdown.find('.faq-dropdown-list');
   const firstDropdownIcon = firstDropdown.find('.faq-dropdown-toggle-icon'); // Target the icon
 
@@ -69,20 +50,6 @@ function initSplide(selector: string, options: any, useAutoScroll = false) {
   if (!splideElement) return;
 
   const splide = new Splide(splideElement, options);
-  const bar = splide.root.querySelector('.my-slider-progress-bar') as HTMLElement;
-
-  // Function to update the progress bar
-  function updateProgressBar() {
-    if (bar) {
-      const end = splide.Components.Controller.getEnd() + 1;
-      bar.style.width = `${(100 * (splide.index + 1)) / end}%`;
-    }
-  }
-
-  // Update the progress bar width when necessary
-  if (bar) {
-    splide.on('mounted move', updateProgressBar);
-  }
 
   // Enable clicking on slides to navigate
   splide.on('mounted', () => {
@@ -92,9 +59,6 @@ function initSplide(selector: string, options: any, useAutoScroll = false) {
       });
     });
   });
-
-  // Trigger progress bar update on viewport resize
-  window.addEventListener('resize', updateProgressBar);
 
   // Mount Splide with Autoscroll extension only if needed
   if (useAutoScroll && window.splide?.Extensions) {
@@ -106,90 +70,168 @@ function initSplide(selector: string, options: any, useAutoScroll = false) {
 
 // Sliders Initialization
 document.addEventListener('DOMContentLoaded', () => {
-  initSplide(
-    '.slider-prod1',
+  const splideConfigs = [
     {
-      perPage: 4,
-      perMove: 1,
-      gap: '1rem',
-      arrows: true,
-      pagination: true,
-      drag: true,
-      type: 'slide',
-      trimSpace: false,
-      breakpoints: {
-        1439: { perPage: 3 },
-        991: { perPage: 2 },
-        639: { perPage: 1 },
+      selector: '.slider-prod1',
+      options: {
+        perPage: 4,
+        perMove: 1,
+        gap: '1rem',
+        arrows: true,
+        pagination: false,
+        drag: true,
+        type: 'slide',
+        trimSpace: false,
+        breakpoints: {
+          1439: { perPage: 3 },
+          991: { perPage: 2 },
+          639: { perPage: 1 },
+        },
       },
+      useAutoScroll: false,
     },
-    false
-  );
+    {
+      selector: '.slider-prod-2',
+      options: {
+        autoWidth: true,
+        perMove: 1,
+        gap: '1rem',
+        arrows: true,
+        pagination: false,
+        drag: true,
+        type: 'slide',
+        focus: 'left',
+        snap: true,
+      },
+      useAutoScroll: false,
+    },
+    {
+      selector: '.slider-process',
+      options: {
+        autoWidth: true,
+        perMove: 1,
+        gap: '1.25rem',
+        arrows: false,
+        pagination: false,
+        drag: true,
+        type: 'slide',
+        focus: 'left',
+        snap: true,
+      },
+      useAutoScroll: false,
+    },
+    {
+      selector: '.slider-cpa',
+      options: {
+        autoWidth: true,
+        perMove: 1,
+        gap: '1.66rem',
+        arrows: true,
+        pagination: false,
+        drag: true,
+        type: 'slide',
+        focus: 'left',
+        snap: true,
+      },
+      useAutoScroll: false,
+    },
+    {
+      selector: '.slider-news',
+      options: {
+        autoWidth: true,
+        perMove: 1,
+        gap: '1.25rem',
+        arrows: true,
+        pagination: false,
+        drag: true,
+        type: 'slide',
+        focus: 'left',
+        snap: true,
+      },
+      useAutoScroll: false,
+    },
+    {
+      selector: '.slider-servicenav',
+      options: {
+        autoWidth: true,
+        perMove: 1,
+        gap: '1rem',
+        arrows: false,
+        pagination: false,
+        drag: true,
+        type: 'slide',
+        focus: 'center',
+        snap: true,
+        breakpoints: {
+          991: { autoWidth: true, focus: 'center' },
+          874: { autoWidth: true, focus: 'left' },
+          579: { autoWidth: true, focus: 'left' },
+        },
+      },
+      useAutoScroll: false,
+    },
+    {
+      selector: '.slider-review',
+      options: {
+        autoWidth: true,
+        perMove: 1,
+        gap: '1rem',
+        arrows: true,
+        pagination: false,
+        drag: true,
+        type: 'loop',
+        focus: 'left',
+        snap: true,
+        breakpoints: {
+          991: { autoWidth: true, focus: 'center' },
+          874: { autoWidth: true, focus: 'center' },
+          579: { autoWidth: true, focus: 'center' },
+        },
+      },
+      useAutoScroll: false,
+    },
+    {
+      selector: '.news-logos',
+      options: {
+        type: 'loop',
+        autoWidth: true,
+        gap: '3rem',
+        drag: 'false',
+        focus: 'left',
+        arrows: false,
+        pagination: false,
+        keyboard: false,
+        autoScroll: {
+          autoStart: true,
+          speed: 0.5,
+          pauseOnHover: false,
+        },
+      },
+      useAutoScroll: true,
+    },
+    {
+      selector: '.slider-r-articles',
+      options: {
+        autoWidth: true,
+        perMove: 1,
+        gap: '1rem',
+        arrows: true,
+        pagination: false,
+        drag: true,
+        type: 'loop',
+        focus: 'left',
+        snap: true,
+        breakpoints: {
+          991: { autoWidth: true, focus: 'left' },
+          874: { autoWidth: true, focus: 'left' },
+          579: { autoWidth: true, focus: 'center' },
+        },
+      },
+      useAutoScroll: false,
+    },
+  ];
 
-  initSplide(
-    '.slider-process',
-    {
-      autoWidth: true,
-      perMove: 1,
-      gap: '1.25rem',
-      arrows: true,
-      pagination: true,
-      drag: true,
-      type: 'slide',
-      focus: 'left',
-      snap: true,
-      breakpoints: {
-        991: { autoWidth: true, focus: 'left' },
-        874: { autoWidth: true, focus: 'left' },
-        579: { autoWidth: true, focus: 'left' },
-      },
-    },
-    false
-  );
-
-  initSplide(
-    '.slider-review',
-    {
-      autoWidth: true,
-      perMove: 1,
-      gap: '1rem',
-      arrows: true,
-      pagination: true,
-      drag: true,
-      type: 'loop',
-      focus: 'left',
-      snap: true,
-      breakpoints: {
-        991: { autoWidth: true, focus: 'center' },
-        874: { autoWidth: true, focus: 'center' },
-        579: { autoWidth: true, focus: 'center' },
-      },
-    },
-    false
-  );
-
-  initSplide(
-    '.news-logos',
-    {
-      type: 'loop',
-      autoWidth: true,
-      gap: '3rem',
-      drag: 'false',
-      focus: 'left',
-      arrows: false,
-      pagination: false,
-      keyboard: false,
-      autoScroll: {
-        autoStart: true,
-        speed: 0.5,
-        pauseOnHover: false,
-      },
-      breakpoints: {
-        768: { perPage: 4 },
-        450: { perPage: 3 },
-        350: { perPage: 2 },
-      },
-    },
-    true
-  );
+  splideConfigs.forEach((config) => {
+    initSplide(config.selector, config.options, config.useAutoScroll);
+  });
 });
